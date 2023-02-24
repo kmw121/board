@@ -1,0 +1,91 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>로그인</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+
+    
+
+    <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	
+
+    
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+    
+    <style type="text/css">
+    
+		body {font-family: "Lato", sans-serif;}
+		.main-head{height: 150px;background: #FFF;}
+		.sidenav {height: 100%;background-color: #000;overflow-x: hidden;padding-top: 20px;}
+		.main {padding: 0px 10px;}
+		@media screen and (max-height: 450px) {.sidenav {padding-top: 15px;}}
+		@media screen and (max-width: 450px) {
+			.login-form{margin-top: 10%;}
+			.register-form{margin-top: 10%;}
+		}
+		@media screen and (min-width: 768px){
+		    .main{margin-left: 40%;}
+			.sidenav{width: 40%;position: fixed;z-index: 1;top: 0;left: 0;}
+		    .login-form{margin-top: 80%;}
+		    .register-form{margin-top: 20%;}
+		}
+		.login-main-text{margin-top: 20%;padding: 60px;color: #fff;}
+		.login-main-text h2{font-weight: 300;}
+		.btn-black{background-color: #000 !important;color: #fff;}
+		    
+    </style>
+    
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    
+  </head>
+  
+  
+  <body class="text-center">
+
+  
+	<main class="form-signin">
+	
+	
+	<div class="sidenav">
+		<div style="height:180px;"></div>
+         <div class="login-main-text">
+            <h2>관리자<br> 로그인 페이지</h2>
+         </div>
+    </div>
+    
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form class="login__input" action="/auth/signin" method="post">
+                  <div class="form-group">
+                     <label>아이디</label>
+                     <input type="text" class="form-control" placeholder="id" name="username">
+                  </div>
+                  <div class="form-group">
+                     <label>패스워드</label>
+                     <input type="password" class="form-control" placeholder="Password" name="password">
+                  </div>
+                  <button type="submit" class="btn btn-black">로그인</button>
+               </form>
+            </div>
+         </div>
+      </div>
+
+	</main>
+  </body>
+</html>
+
+

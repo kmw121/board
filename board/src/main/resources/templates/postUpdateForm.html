@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:replace="/header.html :: fragment-header"></div>
+
+<style type="text/css">
+ html,body{width:1250px;height:1000px; padding:0px; margin:0px}
+ td {height:15px;border:1px solid black;} 
+ th {text-align : center; border:1px solid black;}
+ #tag{
+ 	margin:0px;
+ 	height:50px;
+ 	min-width: 100px;
+ 	
+ }
+ 
+</style>
+<script>
+/*<![CDATA[*/
+   window.onload= function Status() {
+		const updateStatus = "[[${updateStatus}]]";
+		
+		if(updateStatus == "false"){
+			alert("비밀번호 오류")
+			
+		}
+		else if(updateStatus="true"){
+			alert("수정 완료")
+		}
+        
+    }
+/*]]>*/
+</script>
+</head>
+<body bgcolor="blue">
+<div th:replace="/header.html :: fragment-login"></div>
+
+
+
+
+<div style="width:250px;height:800px; text-align : center; float: left; vertical-align: middle;">
+
+<div style="width:100%;height:60%; text-align : center; padding:5%;    position: relative;
+    top: 20%;">
+<p  id = "tag"><a href="/">전체</a></p>    
+<p  id = "tag"><a href="/?type=공지&page=0">공지사항</a></p>
+<p  id = "tag"><a href="/?type=자유&page=0">자유게시판</a></p>
+<p  id = "tag"><a href="/?type=질문&page=0">질문게시판</a></p>
+<p  id = "tag"><a href="/?type=고발&page=0">고발게시판</a></p>
+<p  id = "tag"><a href="/?type=칭찬&page=0">칭찬게시판</a></p>
+</div>
+
+</div>
+
+<div style="width:800px;height:800px; text-align : center; padding-left: 2%; float: left;  position: relative;  vertical-align: middle; ">
+ <form enctype="multipart/form-data" th:action="@{|/post/update/${post.id}|}" method="post">
+  <h4 style=" display: inline-block;">게시글 수정</h4> 
+        <select style=" display: inline-block;" name="type" >
+    					<option th:if="${manager!=null}" value="공지" th:selected="${post.type}=='공지'">공지</option>
+    					<option value="자유" th:selected="${post.type}=='자유'">자유</option>
+    					<option value="질문" th:selected="${post.type}=='질문'">질문</option>
+    					<option value="고발" th:selected="${post.type}=='고발'">고발</option>
+    					<option value="칭찬" th:selected="${post.type}=='칭찬'">칭찬</option>
+		</select>
+            <div id="write_area">
+               		<div> 이미지 삭제 </div>
+               		<div th:each="image : ${post.imageUrls}" style="display: inline-block;" th:if="${image.deleteFlag!='checked'}">
+   						 <img style="margin:10px; max-width: 80%; height: auto;" th:src="@{|${image.imageUrl}|}"/>
+   						 <label th:for="'image'+${image.id}"> 삭제 </label> <input th:if="${image.deleteFlag!='checked'}" th:id="'image'+${image.id}" type="checkbox" name="deleteImage" th:value="${image.id}" th:checked="${postDto.deleteImage != null && #strings.contains(postDto.deleteImage,image.id)}">
+					</div>
+
+                
+                    <div id="in_title">
+                    	<label for="title"> 제목 </label> 
+                    	<textarea id="title" th:if="${postDto.title != null}" th:text="${postDto.title}" style="width: 400px; height: 30px;resize: none;"name="title" rows="1" cols="55" placeholder="제목" maxlength="100" required></textarea>
+                        <textarea id="title" th:if="${postDto.title == null}" th:text="${post.title}" style="width: 400px; height: 30px;resize: none;"name="title" rows="1" cols="55" placeholder="제목" maxlength="100" required></textarea>
+                    </div>
+ 
+                    <div class="wi_line"></div>
+                    
+                    
+                    <div id="in_content">
+                       <label for="content"> 내용 </label> 
+                       <textarea id="title" th:if="${postDto.content != null}" th:text="${postDto.content}" style="width: 400px; height: 400px;resize: none;" name="content"  placeholder="내용" required></textarea>                    	
+                       <textarea id="content" th:if="${postDto.content == null}" th:text="${post.content}" style="width: 400px; height: 400px;resize: none;" name="content"  placeholder="내용" required></textarea>
+                    </div>
+                    <div id="in_content">
+                    <label for="password">비밀번호</label>
+ 						<input style="width: 340px; " id=password type="password" name="password" required/>
+ 				    </div>
+ 				    <div style="text-align : center;">
+ 				     <input style="margin:auto;"type="file" multiple name="files" accept="image/*"/>
+ 				    </div>
+                   
+                    <div class="bt_se">
+                    <div>
+
+					</div>
+                        <button type="submit">글 수정</button>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+
+</body>
+</html>

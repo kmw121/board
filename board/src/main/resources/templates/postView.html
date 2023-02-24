@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:replace="/header.html :: fragment-header"></div>
+
+<script>
+/*<![CDATA[*/
+   window.onload= function Status() {
+		const deleteStatus = "[[${deleteStatus}]]";
+		const updateStatus = "[[${updateStatus}]]";
+		if(deleteStatus == "false"){
+			alert("비밀번호 오류")
+		}
+		else if(updateStatus=="true"){
+			alert("수정 완료")
+		}
+        
+    }
+/*]]>*/
+
+	function managerDeletePost(num){
+		if (window.confirm("정말 삭제하시겠습니까?")) {
+			window.location.href='/post/managerDelete/'+num;
+      	} 
+		else {	
+      	}
+	  
+	}
+	
+	function managerDeleteComment(num,num2){
+		if (window.confirm("정말 삭제하시겠습니까?")) {
+			window.location.href='/comment/managerDelete/'+num+'?postId='+num2;
+      	}
+		else {
+      	}
+	}	
+	
+	function managerDeletereReComment(num,num2){
+		
+		if (window.confirm("정말 삭제하시겠습니까?")) {
+			window.location.href='/reComment/managerDelete/'+num+'?postId='+num2;
+      	}
+		else {
+      	}
+	}
+	function managerResotrePost(num){
+		if(window.confirm("게시글을 복구하시겠습니까?")){
+			window.location.href='/post/managerResotre/'+num;
+		}	
+	}
+
+
+
+	function showPostDelete(num){
+		const target = document.getElementById('deletePo'+num);
+		const other = document.getElementsByClassName("showAndNone");
+		
+		for(var i=0; i<other.length; i++){
+			if(target != other[i]){
+				other[i].style.display= 'none'; 
+			} 
+		}
+		
+		
+		
+		if(target.style.display !== 'none') {
+			target.style.display = 'none';
+	  	}
+	  	else {
+	  		target.style.display = 'block';
+	  	}
+	  
+	}
+
+	function showDelete(num){
+		const target = document.getElementById('delete'+num);
+		
+		const other = document.getElementsByClassName("showAndNone");
+		
+		for(var i=0; i<other.length; i++){
+			if(target != other[i]){
+				other[i].style.display= 'none'; 
+			} 
+		}
+		
+		
+		if(target.style.display !== 'none') {
+			target.style.display = 'none';
+	  	}
+	  	else {
+	  		target.style.display = 'block';
+	  	}
+	  
+	}
+	function showreComment(num){
+		const target = document.getElementById('reComment'+num);
+		
+		const other = document.getElementsByClassName("showAndNone");
+		
+		for(var i=0; i<other.length; i++){
+			if(target != other[i]){
+				other[i].style.display= 'none'; 
+			} 
+		}
+		
+		
+	  	if(target.style.display !== 'none') {
+	  		target.style.display = 'none';
+	  	}
+	  	else {
+	  		target.style.display = 'block';
+	  	}
+	  
+	}
+	function showDeleteRe(num){
+		const target = document.getElementById('deleteRe'+num);
+		
+		const other = document.getElementsByClassName("showAndNone");
+		
+		for(var i=0; i<other.length; i++){
+			if(target != other[i]){
+				other[i].style.display= 'none'; 
+			} 
+		}
+		
+		
+	  	if(target.style.display !== 'none') {
+	  		target.style.display = 'none';
+	  	}
+	  	else {
+	  		target.style.display = 'block';
+	  	}
+	}
+
+</script>
+<style type="text/css">
+ html,body{width:1250px;height:1000px; padding:0px; margin:0px}
+ td {height:15px;border:1px solid black;} 
+ th {text-align : center; border:1px solid black;}
+ #tag{
+ 	margin:0px;
+ 	height:50px;
+ 	min-width: 100px;
+ 	
+ }
+ 
+</style>
+</head>
+<body bgcolor="blue">
+<div th:replace="/header.html :: fragment-login"></div>
+
+
+
+
+<div style="width:250px;height:800px; text-align : center; float: left; vertical-align: middle;">
+
+<div style="width:100%;height:60%; text-align : center; padding:5%;    position: relative;
+    top: 20%;">
+<p  id = "tag"><a href="/">전체</a></p>    
+<p  id = "tag"><a href="/?type=공지&page=0">공지사항</a></p>
+<p  id = "tag"><a href="/?type=자유&page=0">자유게시판</a></p>
+<p  id = "tag"><a href="/?type=질문&page=0">질문게시판</a></p>
+<p  id = "tag"><a href="/?type=고발&page=0">고발게시판</a></p>
+<p  id = "tag"><a href="/?type=칭찬&page=0">칭찬게시판</a></p>
+</div>
+
+</div>
+
+<div style="width:800px;height:800px; text-align : center; padding-left: 2%; float: left;  position: relative;  vertical-align: middle; ">
+
+<div style="width:800px; text-align : center; display: inline-block;" >
+<h4 th:text=${post.title}></h4>
+<button style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px" th:onclick="'showPostDelete('+${post.id}+')'">게시글삭제</button>
+<button style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px" th:onclick="location.href='/post/update/[[${post.id}]]'">게시글수정</button>
+<button th:if="${manager!= null && manager.role == 'manager' && post.deleteFlag !='checked'}" style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px"  th:onclick="'managerDeletePost('+${post.id}+')'">관리자삭제</button>
+<button th:if="${manager!= null && manager.role == 'manager' && post.deleteFlag =='checked'}" style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px"  th:onclick="'managerResotrePost('+${post.id}+')'">게시글복구</button>
+</div>
+
+
+<form  class = "showAndNone" th:id="'deletePo'+${post.id}" style="display:none; margin-bottom:10px; "  enctype="multipart/form-data" th:action="@{|/post/delete/${post.id}|}" method="get">
+	  <input  style="width: 10%; bottom:30px; " id=password type="password" name="password" required/>
+	  <button type="submit"> 삭제 </button>
+</form>
+
+<div style="border:1px solid black;">
+
+<div  th:each="image : ${post.imageUrls}" th:if="${image.deleteFlag!='checked'}" style="display: inline-block;">
+    <img th:if="${image.deleteFlag!='checked'}"style="margin:10px; max-width: 80%; height: auto;"  th:src="@{|${image.imageUrl}|}"/>
+</div>
+
+<div th:text=${post.content}></div>
+
+</div>
+
+<div style="text-align : center; display: inline-block; height:80px; width: 100%" >
+<div id = "comment" th:each=" comment : ${post.comments}" th:if="${comment.deleteFlag!='checked'}">
+	
+	<div style = "margin:4px; float: left; border:2px solid blue; width:700px" th:text=${comment.content}></div>
+	
+	<button style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'showDelete('+${comment.id}+')'">x</button>
+	<button style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'showreComment('+${comment.id}+')'">+</button>
+	<button th:if="${manager!= null && manager.role == 'manager'}" style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'managerDeleteComment('+${comment.id}+','+${post.id}+')'">[x]</button>
+	
+	<form  class="showAndNone" th:id="'delete'+${comment.id}" style="display:none;"  enctype="multipart/form-data" th:action="@{|/comment/delete/${comment.id}|}" method="get">
+	  <input  style="width: 10%; bottom:30px; " id=password type="password" name="password" required/>
+	  <input style="display:none;" name="postId" th:value = "${post.id}"/>
+	  <button type="submit"> 삭제 </button>
+	</form>
+	
+	<form class = "showAndNone" th:id="'reComment'+${comment.id}" style="display:none;"  enctype="multipart/form-data" th:action="@{|/reComment/${comment.id}|}" method="post">
+      <input style="width: 60%; margin-top:10px; height: 26px;resize: none;" type = "text" name="content" id="ucontent" placeholder="댓글" autocomplete="off" required></textarea>
+      <input style="width: 10%; bottom:30px; " id=password type="password" name="password" autocomplete="new-password" required/>
+	  <input style="display:none;" name="postId" th:value = "${post.id}"/>
+	  <button type="submit"> 답글달기 </button>
+	</form>
+	
+	<div th:each=" reComment : ${comment.reComments}"  th:if="${reComment.deleteFlag!='checked'}">
+	
+	 <div style = "margin:4px; border:2px solid red; float: left; width:700px" th:text="'  ㄴ>'+${reComment.content}"></div>
+	 <button style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'showDeleteRe('+${reComment.id}+')'">x</button>
+	 <button th:if="${manager!= null && manager.role == 'manager'}" style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'managerDeletereReComment('+${reComment.id}+','+${post.id}+')'">[x]</button>
+	 
+	 <form class = "showAndNone" th:id="'deleteRe'+${reComment.id}" style="display:none;"  enctype="multipart/form-data" th:action="@{|/reComment/delete/${reComment.id}|}" method="get">
+	  <input  style="width: 10%; bottom:30px; " id=password type="password" name="password" required/>
+	  <input style="display:none;" name="postId" th:value = "${post.id}"/>
+	  <button type="submit"> 삭제 </button>
+	 </form>
+	</div>
+	
+</div>
+
+<form enctype="multipart/form-data" th:action="@{|/comment/${post.id}|}" method="post">
+
+                    <div style="text-align : center; display: inline-block; height:60px; width: 100%" >
+                        <input style="width: 60%; margin-top:10px; height: 26px;resize: none;" type = "text" name="content" id="ucontent" placeholder="댓글" autocomplete="off" required></textarea>
+                        <input style="width: 10%; bottom:30px; " id=password type="password" name="password" autocomplete="new-password" required/>
+                        <button type="submit"> 댓글 작성 </button>
+                    </div>
+</form>
+
+
+</div>
+</div>
+
+
+
+
+</body>
+</html>
