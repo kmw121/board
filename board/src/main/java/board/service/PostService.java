@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostService {
 	private final PostRepository postRepository;
-	private final ImageUrlService imageUrlService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final EntityManager em;
 	

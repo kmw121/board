@@ -1,6 +1,6 @@
 package board.service;
 
-import java.util.List;
+
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 public class CommentService {
 	private final CommentRepository commentRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final ReCommentService reCommentService;
 	
 	public void save(Comment comment) {
 		commentRepository.save(comment);

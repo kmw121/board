@@ -71,7 +71,7 @@
 
                 
                     <div id="in_title">
-                    	<label for="title"> 제목 </label> 
+                    	<label for="title" style="position: relative;"> 제목 </label> 
                     	<textarea id="title" th:if="${postDto.title != null}" th:text="${postDto.title}" style="width: 400px; height: 30px;resize: none;"name="title" rows="1" cols="55" placeholder="제목" maxlength="100" required></textarea>
                         <textarea id="title" th:if="${postDto.title == null}" th:text="${post.title}" style="width: 400px; height: 30px;resize: none;"name="title" rows="1" cols="55" placeholder="제목" maxlength="100" required></textarea>
                     </div>
@@ -81,9 +81,10 @@
                     
                     <div id="in_content">
                        <label for="content"> 내용 </label> 
-                       <textarea id="title" th:if="${postDto.content != null}" th:text="${postDto.content}" style="width: 400px; height: 400px;resize: none;" name="content"  placeholder="내용" required></textarea>                    	
-                       <textarea id="content" th:if="${postDto.content == null}" th:text="${post.content}" style="width: 400px; height: 400px;resize: none;" name="content"  placeholder="내용" required></textarea>
+                       <textarea id="title" th:if="${postDto.content == null}" th:utext="${#strings.replace(post.content,'<br>', '&#10;')}" style="white-space:pre-wrap; width: 400px; height: 400px;resize: none;" name="content"  placeholder="내용" required></textarea>                   	
+                       <textarea id="content" th:if="${postDto.content != null}" th:utext="${#strings.replace(postDto.content,'<br>', '&#10;')}" style="width: 400px; height: 400px;resize: none;" name="content"  placeholder="내용" required></textarea>
                     </div>
+                    
                     <div id="in_content">
                     <label for="password">비밀번호</label>
  						<input style="width: 340px; " id=password type="password" name="password" required/>
@@ -93,13 +94,10 @@
  				    </div>
                    
                     <div class="bt_se">
-                    <div>
-
-					</div>
                         <button type="submit">글 수정</button>
                     </div>
-                    
-                    
+              </div>
+
                 </form>
             </div>
 

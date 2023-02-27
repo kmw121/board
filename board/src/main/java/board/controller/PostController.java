@@ -36,12 +36,11 @@ public class PostController {
 
 	@GetMapping("/post")
 	public String post(Model model,@AuthenticationPrincipal PrincipalDetails principalDetails,@RequestParam(required = false) String type) {
-
 		
 		if(principalDetails!=null) {
 			model.addAttribute("manager",principalDetails.getUser());
 		}
-		if(principalDetails==null) {
+		if(type==null) {
 			model.addAttribute("type"," ");
 		}
 		else {
@@ -52,9 +51,14 @@ public class PostController {
 	}
 	
 	@PostMapping("/post")
-	public String doPost(@ModelAttribute PostDto postDto,Model model) {
-		
+	public String doPost(@RequestParam(required = false) String content,@ModelAttribute PostDto postDto,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		postDto.setContent(postDto.getContent().replaceAll("\r\n", "<br>"));
 		Post post = postDto.toEntity();
+		
+		if(post.getType().equals("공지")&&(principalDetails==null || !principalDetails.getUser().getRole().equals("manager"))) {
+			return "redirect:/";
+		}
+		
 		String type = post.getType();
 		Long count = postService.findCount(type);
 		post.setTypeCount(count+1);
@@ -156,10 +160,9 @@ public class PostController {
 	@GetMapping("/post/update/{postId}")
 	public String postUpdate(Model model,@PathVariable Long postId,@ModelAttribute PostDto sendPostDto,@RequestParam(required = false) String updateStatus,
 			@AuthenticationPrincipal PrincipalDetails principalDetails) {
-		
-			PostDto postDto = new PostDto();
-		
 			
+			
+			PostDto postDto = new PostDto();
 			
 			if(sendPostDto.getTitle()!=null||sendPostDto.getContent()!=null) {
 				postDto = sendPostDto;
@@ -170,6 +173,10 @@ public class PostController {
 			String deleteFlag = post.getDeleteFlag();
 			
 			if(deleteFlag !=null && deleteFlag.equals("checked") && (principalDetails==null || !principalDetails.getUser().getRole().equals("manager"))) {
+				return "redirect:/";
+			}
+			
+			else if(post.getType().equals("공지")&&(principalDetails==null || !principalDetails.getUser().getRole().equals("manager"))) {
 				return "redirect:/";
 			}
 			
@@ -196,14 +203,12 @@ public class PostController {
 	@PostMapping("/post/update/{postId}")
 	public String postUpdate(@ModelAttribute PostDto postDto,Model model,@PathVariable Long postId) {
 			
-		
-			
 			if(postService.passwordCheck(postId, postDto.getPassword())) {
 				Post post = postService.find(postId);
 				post.setTitle(postDto.getTitle());
-				post.setContent(postDto.getContent());
+				post.setContent(postDto.getContent().replaceAll("\r\n", "<br>"));
 				post.setType(postDto.getType());
-				post.setTypeCount(postService.findCount(postDto.getType())+1);
+				if(post.getType().equals(postDto.getType())) post.setTypeCount(postService.findCount(postDto.getType())+1);
 				if(postDto.getDeleteImage()!=null) {
 				for(String imageId : postDto.getDeleteImage()) {
 					imageUrlService.deleteByImageId(Long.parseLong(imageId),"password");

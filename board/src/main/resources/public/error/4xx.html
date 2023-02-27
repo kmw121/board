@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head th:fragment="fragment-header">
+<html>
+<head>
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,23 +16,23 @@
 
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-
 </head>
 
+<style>
+
+ html,body{width:1250px;height:1000px; padding:0px; margin:0px}
+
+</style>
+
+
 <body>
-<div  align="right" th:fragment="fragment-login">
 
- <div th:if="${manager} == null" style="margin:20px" > 
- <button type="button" class="btn btn-primary" onClick="location.href='/auth/signin'">관리자 로그인</button>
- </div>
 
- <div th:if="${manager} != null" style="margin:20px">
-<button type="button" class="btn btn-primary" onClick="location.href='/logout'">로그아웃</button>
- </div>
-  
-</div>
+<span style = " font-size:1.5em;  color: green; text-align: center;">
+<p style=" text-align: center; margin-top:300px;">페이지 경로가 올바르지 않습니다.</p>
+<br>
+<p style=" text-align: center;"><a href="/">메인으로 돌아가기</a></p>
+</span>
+
 </body>
-
-
 </html>

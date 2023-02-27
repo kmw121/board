@@ -169,11 +169,14 @@
 <div style="width:800px;height:800px; text-align : center; padding-left: 2%; float: left;  position: relative;  vertical-align: middle; ">
 
 <div style="width:800px; text-align : center; display: inline-block;" >
-<h4 th:text=${post.title}></h4>
-<button style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px" th:onclick="'showPostDelete('+${post.id}+')'">게시글삭제</button>
-<button style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px" th:onclick="location.href='/post/update/[[${post.id}]]'">게시글수정</button>
-<button th:if="${manager!= null && manager.role == 'manager' && post.deleteFlag !='checked'}" style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px"  th:onclick="'managerDeletePost('+${post.id}+')'">관리자삭제</button>
-<button th:if="${manager!= null && manager.role == 'manager' && post.deleteFlag =='checked'}" style = "margin-left:350px; margin-bottom:10px; float: left; text-align : center; width:100px; height:30px"  th:onclick="'managerResotrePost('+${post.id}+')'">게시글복구</button>
+<div style="width:800px; display:flex; justify-content: center ">
+<button class="btn btn-dark" th:if="${post.type!='공지'||(manager!= null && manager.role == 'manager')}" style = "margin-left:10px; margin-bottom:10px; float : middle; display: flex; align-items:center; justify-content: center; text-align : center; width:100px; height:30px" th:onclick="location.href='/post/update/[[${post.id}]]'">게시글수정</button>
+<button class="btn btn-dark" th:if="${post.type!='공지'||(manager!= null && manager.role == 'manager')}" style = "margin-left:10px; margin-bottom:10px; float : middle; display: flex; align-items:center; justify-content: center; text-align : center; width:100px; height:30px" th:onclick="'showPostDelete('+${post.id}+')'">게시글삭제</button>
+<button class="btn btn-danger" th:if="${manager!= null && manager.role == 'manager' && post.deleteFlag !='checked'}" style = "margin-left:10px; margin-bottom:10px; float: left; float : middle; display: flex; align-items:center; justify-content: center; text-align : center; width:100px; height:30px"  th:onclick="'managerDeletePost('+${post.id}+')'">관리자삭제</button>
+<button class="btn btn-success" th:if="${manager!= null && manager.role == 'manager' && post.deleteFlag =='checked'}" style = "margin-left:10px; margin-bottom:10px; float: left; float : middle; display: flex; align-items:center; justify-content: center;text-align : center; width:100px; height:30px"  th:onclick="'managerResotrePost('+${post.id}+')'">게시글복구</button>
+</div>
+<p style="margin-top:5px;margin-bottom:5px;text-align : left;"><b>제목</b></p>
+<h4 style="border:2px solid black; padding:5px; padding-top:7px; " th:text=${post.title}></h4>
 </div>
 
 
@@ -182,46 +185,51 @@
 	  <button type="submit"> 삭제 </button>
 </form>
 
-<div style="border:1px solid black;">
+<p style="margin-top:5px;margin-bottom:5px;text-align : left;"><b>내용</b></p>
+
+<div style="width:800px; border:2px solid black; padding:5px;">
 
 <div  th:each="image : ${post.imageUrls}" th:if="${image.deleteFlag!='checked'}" style="display: inline-block;">
     <img th:if="${image.deleteFlag!='checked'}"style="margin:10px; max-width: 80%; height: auto;"  th:src="@{|${image.imageUrl}|}"/>
 </div>
 
-<div th:text=${post.content}></div>
+<p align="left" style="margin:3px; word-wrap: break-word; "th:utext="${#strings.replace(post.content,'<br>', '&lt;br /&gt;')}"></p>
 
 </div>
 
-<div style="text-align : center; display: inline-block; height:80px; width: 100%" >
+<div style="text-align : center; display: inline-block; height:80px; width: 1000px;" >
+<p style="margin-top:5px;margin-bottom:5px;text-align : left;"><b>댓글</b></p>
 <div id = "comment" th:each=" comment : ${post.comments}" th:if="${comment.deleteFlag!='checked'}">
 	
-	<div style = "margin:4px; float: left; border:2px solid blue; width:700px" th:text=${comment.content}></div>
+	<div style = "word-wrap: break-word; margin-bottom:4px; float: left; border:2px solid black; width:800px" th:text=${comment.content}></div>
 	
-	<button style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'showDelete('+${comment.id}+')'">x</button>
-	<button style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'showreComment('+${comment.id}+')'">+</button>
-	<button th:if="${manager!= null && manager.role == 'manager'}" style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'managerDeleteComment('+${comment.id}+','+${post.id}+')'">[x]</button>
-	
-	<form  class="showAndNone" th:id="'delete'+${comment.id}" style="display:none;"  enctype="multipart/form-data" th:action="@{|/comment/delete/${comment.id}|}" method="get">
-	  <input  style="width: 10%; bottom:30px; " id=password type="password" name="password" required/>
+	<button class="btn btn-primary" style = " margin-left:3px; float: left; text-align : center; width:15px; height:25px; display: flex; align-items:center; justify-content: center;" th:onclick="'showreComment('+${comment.id}+')'">+</button>
+	<button class="btn btn-primary" style = " margin-left:3px; float: left; text-align : center; width:15px; height:25px; display: flex; align-items:center; justify-content: center;" th:onclick="'showDelete('+${comment.id}+')'">x</button>
+	<button class="btn btn-danger" th:if="${manager!= null && manager.role == 'manager'}" style = "margin-left:3px; float: left; text-align : center; width:15px; height:25px; display: flex; align-items:center; justify-content: center; " th:onclick="'managerDeleteComment('+${comment.id}+','+${post.id}+')'">[x]</button>
+
+	<form  class="showAndNone" th:id="'delete'+${comment.id}" style="display:none; float: left; margin:3px; width:800px;"  enctype="multipart/form-data" th:action="@{|/comment/delete/${comment.id}|}" method="get">
+	  <laber th:for="'deleteCommentPasswordInput'+${comment.id}"><b>비밀번호</b></laber>
+	  <input th:id="'deleteCommentPasswordInput'+${comment.id}" style="width: 100px; bottom:30px; " id=password type="password" name="password" required/>
 	  <input style="display:none;" name="postId" th:value = "${post.id}"/>
 	  <button type="submit"> 삭제 </button>
 	</form>
+
 	
-	<form class = "showAndNone" th:id="'reComment'+${comment.id}" style="display:none;"  enctype="multipart/form-data" th:action="@{|/reComment/${comment.id}|}" method="post">
-      <input style="width: 60%; margin-top:10px; height: 26px;resize: none;" type = "text" name="content" id="ucontent" placeholder="댓글" autocomplete="off" required></textarea>
-      <input style="width: 10%; bottom:30px; " id=password type="password" name="password" autocomplete="new-password" required/>
+	<form class = "showAndNone" th:id="'reComment'+${comment.id}" style="display:none; text-align : left;"  enctype="multipart/form-data" th:action="@{|/reComment/${comment.id}|}" method="post">
+      <input style="width: 800px; margin-top:3px;  margin-bottom:3px; height: 26px;resize: none;" type = "text" name="content" id="ucontent" placeholder="답글" autocomplete="off" required>
+      <input style="width: 70px; bottom:30px; " id=password type="password" name="password" autocomplete="new-password" required/>
 	  <input style="display:none;" name="postId" th:value = "${post.id}"/>
 	  <button type="submit"> 답글달기 </button>
 	</form>
 	
-	<div th:each=" reComment : ${comment.reComments}"  th:if="${reComment.deleteFlag!='checked'}">
-	
-	 <div style = "margin:4px; border:2px solid red; float: left; width:700px" th:text="'  ㄴ>'+${reComment.content}"></div>
-	 <button style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'showDeleteRe('+${reComment.id}+')'">x</button>
-	 <button th:if="${manager!= null && manager.role == 'manager'}" style = "float: left; text-align : center; width:15px; height:15px" th:onclick="'managerDeletereReComment('+${reComment.id}+','+${post.id}+')'">[x]</button>
-	 
-	 <form class = "showAndNone" th:id="'deleteRe'+${reComment.id}" style="display:none;"  enctype="multipart/form-data" th:action="@{|/reComment/delete/${reComment.id}|}" method="get">
-	  <input  style="width: 10%; bottom:30px; " id=password type="password" name="password" required/>
+	<div th:each=" reComment : ${comment.reComments}"  th:if="${reComment.deleteFlag!='checked'}" style="display:inline-block; float: left;">
+	 <div style="width:23px;height:23px; margin-top:3px; margin-left:2px; background-image: url(../img/arrow.png);  background-size : contain; float: left; display: inline-block;" ></div>
+	 <div style = "word-wrap: break-word; margin-top:3px; margin-bottom:3px; margin-left:5px; border:2px solid brown; float: left; width:770px" th:text="${reComment.content}"></div>
+	 <button class="btn btn-primary" style = "margin-left:3px; float: left; text-align : center; width:15px; height:25px; display: flex; align-items:center; justify-content: center;" th:onclick="'showDeleteRe('+${reComment.id}+')'">x</button>
+	 <button class="btn btn-danger" th:if="${manager!= null && manager.role == 'manager'}" style = "margin-left:3px; float: left; text-align : center; width:15px; height:25px; display: flex; align-items:center; justify-content: center;" th:onclick="'managerDeletereReComment('+${reComment.id}+','+${post.id}+')'">[x]</button>
+	 <form class = "showAndNone" th:id="'deleteRe'+${reComment.id}" style="display:none; float: left; margin:3px; width:800px;"  enctype="multipart/form-data" th:action="@{|/reComment/delete/${reComment.id}|}" method="get">
+	  <laber th:for="'deleteReCommentPasswordInput'+${comment.id}"><b>비밀번호</b></laber>
+	  <input th:id="'deleteReCommentPasswordInput'+${comment.id}" style="width: 10%; bottom:30px; " id=password type="password" name="password"  required/>
 	  <input style="display:none;" name="postId" th:value = "${post.id}"/>
 	  <button type="submit"> 삭제 </button>
 	 </form>
@@ -231,10 +239,10 @@
 
 <form enctype="multipart/form-data" th:action="@{|/comment/${post.id}|}" method="post">
 
-                    <div style="text-align : center; display: inline-block; height:60px; width: 100%" >
-                        <input style="width: 60%; margin-top:10px; height: 26px;resize: none;" type = "text" name="content" id="ucontent" placeholder="댓글" autocomplete="off" required></textarea>
-                        <input style="width: 10%; bottom:30px; " id=password type="password" name="password" autocomplete="new-password" required/>
-                        <button type="submit"> 댓글 작성 </button>
+                    <div style="text-align : left; display: inline-block; height:60px; width: 100%" >
+                        <input style="width: 800px; margin-top:10px; height: 26px;resize: none;" type = "text" name="content" id="ucontent" placeholder="댓글" autocomplete="off" required>
+                        <input style="width: 70px; bottom:30px; " id=password type="password" name="password" autocomplete="new-password" required/>
+                        <button type="submit"> 댓글작성 </button>
                     </div>
 </form>
 
